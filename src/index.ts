@@ -16,7 +16,11 @@ const app: Express = express();
 
 Model.knex(knexInstance);
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://visitor-management-system-dashboard.vercel.app',
+  credentials: true
+}));
+app.options('*', cors());
 app.use(morgan("combined"));
 
 app.use(express.urlencoded({ extended: true }));
