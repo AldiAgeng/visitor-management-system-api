@@ -16,7 +16,10 @@ const app: Express = express();
 
 Model.knex(knexInstance);
 
-app.use(cors());
+app.use(cors({
+  origin: '*'
+}));
+
 // tes
 app.use(morgan("combined"));
 
