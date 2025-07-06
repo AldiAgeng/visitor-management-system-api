@@ -1,3 +1,4 @@
+# .github/workflows/deploy.yml
 name: 🚀 Deploy Express to VPS
 
 on:
@@ -7,13 +8,14 @@ on:
 
 jobs:
   deploy:
+    name: 🔄 Deploy to VPS
     runs-on: ubuntu-latest
 
     steps:
-    - name: 🧾 Checkout code
+    - name: 📥 Checkout Code
       uses: actions/checkout@v3
 
-    - name: 📂 Copy files to VPS
+    - name: 📤 Upload Files to VPS
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -22,7 +24,7 @@ jobs:
         source: "."
         target: "/var/www/visitor-management-system-api"
 
-    - name: 🚀 Restart PM2 on VPS
+    - name: 🖥️ SSH into VPS and Deploy
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -31,4 +33,5 @@ jobs:
         script: |
           cd /var/www/visitor-management-system-api
           npm install --production
+          npx tsc
           pm2 restart express-app
