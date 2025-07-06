@@ -21,6 +21,7 @@ app.use(cors({
   credentials: true
 }));
 app.options('*', cors());
+// tes
 app.use(morgan("combined"));
 
 app.use(express.urlencoded({ extended: true }));
