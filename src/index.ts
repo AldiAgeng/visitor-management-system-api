@@ -16,10 +16,6 @@ const app: Express = express();
 
 Model.knex(knexInstance);
 
-app.use(cors({
-  origin: ['http://localhost:4200', 'https://visitor-management-system-dashboard.vercel.app'],
-}));
-
 // tes
 app.use(morgan("combined"));
 
