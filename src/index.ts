@@ -16,11 +16,7 @@ const app: Express = express();
 
 Model.knex(knexInstance);
 
-app.use(cors({
-  origin: 'https://visitor-management-system-dashboard.vercel.app',
-  credentials: true
-}));
-app.options('*', cors());
+app.use(cors());
 // tes
 app.use(morgan("combined"));
 
