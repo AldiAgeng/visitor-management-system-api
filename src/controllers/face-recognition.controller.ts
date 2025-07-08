@@ -33,6 +33,14 @@ export class FaceRecognitionController {
     try {
       const data = await this.faceRecognitionService.info(req.body);
 
+      if (!data) {
+        return res.status(404).json({
+          msg: 'Data not found',
+          result: 0,
+          success: false
+        });
+      }
+
       return res.json({
         'msg': 'success',
         'result': 1,
@@ -41,9 +49,9 @@ export class FaceRecognitionController {
       });
     } catch (error) {
       return res.status(500).json({
+        msg: `Gagal ambil data ${error}`,
         result: 0,
         success: false,
-        msg: `Gagal ambil data ${error}`,
       });
     }
   }
