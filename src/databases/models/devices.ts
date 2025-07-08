@@ -12,6 +12,19 @@ export class DevicesModel extends Model {
   static get tableName() {
     return "devices";
   }
+
+  static get relationMappings() {
+    return {
+      visitors: {
+        relation: Model.HasManyRelation,
+        modelClass: "VisitorModel",
+        join: {
+          from: "devices.id",
+          to: "visitors.device_id",
+        },
+      },
+    };
+  }
 }
 
 export type Devices = ModelObject<DevicesModel>;

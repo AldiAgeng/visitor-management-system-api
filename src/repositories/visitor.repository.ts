@@ -6,7 +6,7 @@ export class VisitorRepository {
   }
 
   async show(payload: any) {
-    return await VisitorModel.query().findOne(payload);
+    return await VisitorModel.query().withGraphFetched("device").findOne(payload);
   }
 
   async update(visitorId: number, payload: any) {
@@ -17,7 +17,7 @@ export class VisitorRepository {
   }
 
   async list() {
-    return await VisitorModel.query().select("*").orderBy("id", "desc");
+    return await VisitorModel.query().withGraphFetched("device").select("*").orderBy("id", "desc");
   }
 
   async delete(visitorId: number) {

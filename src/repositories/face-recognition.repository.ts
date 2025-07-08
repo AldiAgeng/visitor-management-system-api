@@ -20,10 +20,10 @@ export class FaceRecognitionRepository {
     const offset = page && pageSize ? (+page - 1) * +pageSize : 0;
     const limit = pageSize ? +pageSize : null;
 
-    const query = knexInstance("visitor_records")
-      .join("visitors", "visitor_records.idcard_num", "visitors.idcard_num")
-      .where("visitor_records.group_id", groupId)
-      .andWhere("visitor_records.device_key", deviceKey)
+    const query = knexInstance("visitors")
+      .join("devices", "visitors.device_id", "devices.id")
+      .where("visitors.group_id", groupId)
+      .andWhere("devices.device_key", +deviceKey)
       .select(
         "visitors.idcard_num as idcardNum",
         "visitors.type",
@@ -31,7 +31,7 @@ export class FaceRecognitionRepository {
       );
 
     if (limit) {
-      query.limit(limit).offset(offset);
+      query.limit(+limit).offset(+offset);
     }
 
     const results = await query;
@@ -54,12 +54,12 @@ export class FaceRecognitionRepository {
   async info(data: any){
     const { groupId, deviceKey, idcardNum } = data;
 
-    const result = await knexInstance("visitor_records")
-      .join("visitors", "visitor_records.idcard_num", "visitors.idcard_num")
-      .where("visitor_records.group_id", groupId)
-      .andWhere("visitor_records.device_key", deviceKey)
+    const result = await knexInstance("visitors")
+      .join("devices", "visitors.device_id", "devices.id")
+      .where("visitors.group_id", groupId)
+      .andWhere("devices.device_key", deviceKey)
       .andWhere("visitors.idcard_num", idcardNum)
-      .orderBy("visitor_records.created_at", "desc")
+      .orderBy("visitors.created_at", "desc")
       .select(
         "visitors.idcard_num as idcardNum",
         "visitors.name",

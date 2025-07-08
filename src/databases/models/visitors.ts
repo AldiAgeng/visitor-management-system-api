@@ -1,4 +1,5 @@
 import { Model, ModelObject } from "objection";
+import { DevicesModel } from "./devices";
 
 export class VisitorModel extends Model {
   id!: number;
@@ -9,6 +10,7 @@ export class VisitorModel extends Model {
   md5!: string | null;
   passtime!: string | null;
   group_id!: string | null;
+  device_id!: number | null;
   created_at!: Date;
   updated_at!: Date;
 
@@ -24,6 +26,14 @@ export class VisitorModel extends Model {
         join: {
           from: "visitors.idcard_num",
           to: "visitor_records.idcard_num",
+        },
+      },
+      device: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: DevicesModel,
+        join: {
+          from: "visitors.device_id",
+          to: "devices.id",
         },
       },
     };
