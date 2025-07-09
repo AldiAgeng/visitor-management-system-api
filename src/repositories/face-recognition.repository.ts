@@ -23,7 +23,7 @@ export class FaceRecognitionRepository {
     const query = knexInstance("visitors")
       .join("devices", "visitors.device_id", "devices.id")
       .where("visitors.group_id", groupId)
-      .andWhere("devices.device_key", +deviceKey)
+      .andWhere("devices.device_key", deviceKey)
       .select(
         "visitors.idcard_num as idcardNum",
         "visitors.type",
