@@ -44,8 +44,11 @@ route.put('/visitors/:id', authenticateToken, upload.single('img_base64'), visit
 route.delete('/visitors/:id', authenticateToken, visitorController.delete);
 
 // face recognition routes
-route.post('/dataUpload', faceRecognitionController.create);
+route.post('/dataUpload', upload.single('imgBase64'), faceRecognitionController.create);
 route.post('/getPersonList', faceRecognitionController.list);
 route.post('/getPersonInfo', faceRecognitionController.info);
+
+// visitor records
+route.get('/visitor-records', authenticateToken, faceRecognitionController.listVisitorRecords);
 
 export default route;

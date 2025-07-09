@@ -1,11 +1,13 @@
 import { Response, Request } from "express";
-import { VisitorRecord, VisitorRecordModel } from '../databases/models/visitor_records';
+import { VisitorRecord } from '../databases/models/visitor_records';
 import { FaceRecognitionService } from './../services/face-recognition.service';
+import { ResponseHelper } from "../helpers/response.helper";
 
-export class FaceRecognitionController {
+export class FaceRecognitionController extends ResponseHelper {
   protected faceRecognitionService;
 
   constructor() {
+    super();
     this.faceRecognitionService = new FaceRecognitionService();
   }
 
@@ -64,13 +66,14 @@ export class FaceRecognitionController {
         deviceKey,
         idcardNumber,
         recordId,
-        imgBase64,
         time,
         type,
         extra
       } = req.body;
 
-      if (!groupId || !deviceKey || !idcardNumber || !recordId || !time || !type || !imgBase64) {
+      const image = req.file;
+
+      if (!groupId || !deviceKey || !idcardNumber || !recordId || !time || !type || !image) {
         return res.status(400).json({
           result: 0,
           success: false,
@@ -83,13 +86,12 @@ export class FaceRecognitionController {
         device_key: deviceKey,
         idcard_num: idcardNumber,
         record_id: recordId,
-        img_base64: imgBase64 ?? null,
         time,
         type,
         extra: extra ? (typeof extra === 'string' ? JSON.parse(extra) : extra) : null
       };
 
-      await this.faceRecognitionService.create(body);
+      await this.faceRecognitionService.create(body, image);
 
       return res.json({
         result: 1,
@@ -106,4 +108,17 @@ export class FaceRecognitionController {
     }
   };
 
+  listVisitorRecords = async (req: Request, res: Response) => {
+    try {
+      const data = await this.faceRecognitionService.listVisitorRecord(req.query);
+
+    return this.success("Data ditemukan", data, 200)(res);
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.error(error.message, null, 404)(res);
+      } else {
+        return this.error("An unknown error occurred")(res);
+      }
+    }
+  }
 }

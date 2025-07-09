@@ -72,4 +72,19 @@ export class FaceRecognitionRepository {
 
     return result;
   }
+
+  listVisitorRecord = async (data: any) => {
+    console.log(data);
+    const visitorRecord = VisitorRecordModel.query();
+
+    if (data.device_key) {
+      visitorRecord.where("device_key", data.device_key);
+    }
+
+    if (data.idcard_num) {
+      visitorRecord.orWhere("idcard_num", data.idcard_num);
+    }
+
+    return await visitorRecord.select("*").orderBy("created_at", "desc");
+  }
 }
