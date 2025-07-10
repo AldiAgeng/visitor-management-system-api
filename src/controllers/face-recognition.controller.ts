@@ -68,12 +68,11 @@ export class FaceRecognitionController extends ResponseHelper {
         recordId,
         time,
         type,
+        imgBase64,
         extra
       } = req.body;
 
-      const image = req.file;
-
-      if (!groupId || !deviceKey || !idcardNumber || !recordId || !time || !type || !image) {
+      if (!groupId || !deviceKey || !idcardNumber || !recordId || !time || !type || !imgBase64) {
         return res.status(400).json({
           result: 0,
           success: false,
@@ -86,12 +85,13 @@ export class FaceRecognitionController extends ResponseHelper {
         device_key: deviceKey,
         idcard_num: idcardNumber,
         record_id: recordId,
+        img_base64: imgBase64 ?? null,
         time,
         type,
         extra: extra ? (typeof extra === 'string' ? JSON.parse(extra) : extra) : null
       };
 
-      await this.faceRecognitionService.create(body, image);
+      await this.faceRecognitionService.create(body);
 
       return res.json({
         result: 1,

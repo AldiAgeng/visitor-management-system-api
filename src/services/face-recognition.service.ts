@@ -15,16 +15,8 @@ export class FaceRecognitionService {
     return [];
   }
 
-  async create(data: any, image: any) {
-      const fileBuffer = image.buffer;
-      const fileBase64 = fileBuffer.toString('base64');
-
-      const resultData = {
-        ...data,
-        img_base64: fileBase64
-      }
-      
-    return await this.faceRecognitionRepository.create(resultData);
+  async create(data: any) {
+    return await this.faceRecognitionRepository.create(data);
   }
 
   async info(data: any) {
