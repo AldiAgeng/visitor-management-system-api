@@ -34,4 +34,4 @@ jobs:
           cd /var/www/visitor-management-system-api
           npm install --production
           npx tsc
-          pm2 restart express-app
+          pm2 restart visitor-management-system-api
